@@ -1,4 +1,5 @@
+import processing.core.PApplet;
 
-public class DrawingSurface {
+public class DrawingSurface extends PApplet {
 
 }
