@@ -1,25 +1,47 @@
-import java.awt.Dimension;
-
+import java.awt.CardLayout;
 import javax.swing.JFrame;
-
-import processing.awt.PSurfaceAWT;
+import javax.swing.JPanel;
 import processing.core.PApplet;
 
-public class Main {
-
+public class Main extends JFrame{
+	
+	private JPanel cardPanel;
+	
+	private PauseMenu pMenuPanel;
+	private MainMenu mMenuPanel;
+	private DrawingSurface drawPanel;
+	
+	
+	public Main(String title) {
+		super(title);
+		setBounds(100, 100, 800, 600);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		cardPanel = new JPanel();
+		CardLayout cl = new CardLayout();
+		cardPanel.setLayout(cl);
+		
+		pMenuPanel = new PauseMenu(this);
+		mMenuPanel = new MainMenu(this);
+		drawPanel = new DrawingSurface();
+				
+		cardPanel.add(mMenuPanel, "m");
+		cardPanel.add(pMenuPanel, "p");
+		cardPanel.add(drawPanel, "d");
+		
+		add(cardPanel);
+		
+		setVisible(true);
+		
+		
+	}
+	
 	public static void main(String[] args) {
-		DrawingSurface drawing = new DrawingSurface();
-		PApplet.runSketch(new String[]{""}, drawing);
-		PSurfaceAWT surf = (PSurfaceAWT) drawing.getSurface();
-		PSurfaceAWT.SmoothCanvas canvas = (PSurfaceAWT.SmoothCanvas) surf.getNative();
-		JFrame window = (JFrame)canvas.getFrame();
-
-		window.setSize(800, 600);
-		window.setMinimumSize(new Dimension(100,100));
-		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		window.setResizable(true);
-
-		window.setVisible(true);
-		canvas.requestFocus();
+		Main m = new Main("Time Escape");
+	}
+	
+	public void changePanel() {
+		((CardLayout)cardPanel.getLayout()).next(cardPanel);
+		drawPanel.requestFocus();
 	}
 }
