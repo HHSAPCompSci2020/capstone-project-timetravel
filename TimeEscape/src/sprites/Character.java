@@ -8,7 +8,7 @@ package sprites;
 public class Character extends Sprite{
 	
 	public double height = 50.0;
-	public double width = 50.0;
+	public double width = 25.0;
 	public double vx, vy, gravity, friction;
 	public double jump;
 	
@@ -38,17 +38,18 @@ public class Character extends Sprite{
 		
 		double x = s.getX();
 		x += vx;
-		s.setX(x);
+		this.setX(x);
 		
 		double y = s.getY();
 		y += vy;
-		s.setY(y);
+		this.setY(y);
 		
 		vy *= friction;
 		vx *= friction;
 		
 		vy += gravity;
 		
-		
 	}
+	
+	
 }
