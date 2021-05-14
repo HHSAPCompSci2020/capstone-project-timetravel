@@ -18,9 +18,13 @@ public class DrawingSurface extends PApplet {
 	public DrawingSurface() {
 		super();
 		keys = new ArrayList<Integer>();
-
+		spawnNewCharacter();
 	}
 	
+	public void spawnNewCharacter() {
+		
+		character = new Character(loadImage("character.png"), 50,50);
+	}
 	
 	public void setup() {
 		
