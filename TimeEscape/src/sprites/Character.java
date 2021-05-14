@@ -29,9 +29,12 @@ public class Character extends Sprite{
 		vy -= jump;
 	}
 	
-	public void stop() {
-		vx = 0;
+	public void standing() {
 		vy = 0;
+	}
+	
+	public void blocked() {
+		vx = 0;
 	}
 	
 	public void act() {

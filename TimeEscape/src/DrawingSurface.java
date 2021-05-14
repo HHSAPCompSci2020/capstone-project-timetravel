@@ -1,4 +1,5 @@
 import java.awt.Rectangle;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 
 import processing.core.PApplet;
@@ -32,6 +33,17 @@ public class DrawingSurface extends PApplet {
 	
 	public void draw() {
 		character.draw(this);
+		
+		
+		
+		if (isPressed(KeyEvent.VK_A))
+			character.walk(-1);
+		if (isPressed(KeyEvent.VK_D))
+			character.walk(1);
+		if (isPressed(KeyEvent.VK_SPACE))
+			character.jump();
+		if (isPressed(KeyEvent.VK_W))
+
 	}
 	
 	public void keyPressed() {
