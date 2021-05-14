@@ -1,4 +1,5 @@
 import java.awt.Rectangle;
+import java.awt.Shape;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 
@@ -37,6 +38,15 @@ public class DrawingSurface extends PApplet {
 	}
 	
 	public void draw() {
+		
+		fill(100);
+		for (Shape s : walls) {
+			if (s instanceof Wall) {
+				Rectangle r = (Rectangle)s;
+				rect(r.x,r.y,r.width,r.height);
+			}
+		}
+		
 		character.draw(this);
 		
 		
