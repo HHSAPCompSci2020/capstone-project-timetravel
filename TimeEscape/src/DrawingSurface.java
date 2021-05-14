@@ -31,7 +31,7 @@ public class DrawingSurface extends PApplet {
 	}
 	
 	public void draw() {
-		
+		character.draw(this);
 	}
 	
 	public void keyPressed() {

@@ -57,21 +57,17 @@ GUI classes
 DrawingSurface
 Main Menu
 Pause Menu
-GameBoard
 Sprite classes
 Character
 TimeCharacter
 Wall
 Box
-Door
 
 Credits:
 Taya Williams
 Sprite Classes
-GameBoard (½)
 Ethan Chang
 Drawing Surface
 Main Menu
 Pause Menu
-GameBoard (½)
 
