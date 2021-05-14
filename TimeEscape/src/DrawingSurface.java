@@ -15,10 +15,12 @@ public class DrawingSurface extends PApplet {
 	private Rectangle screenRect;
 	
 	private ArrayList<Integer> keys;
+	private ArrayList<Wall> walls;
 
 	public DrawingSurface() {
 		super();
 		keys = new ArrayList<Integer>();
+		spawnNewWall();
 		spawnNewCharacter();
 	}
 	
@@ -27,12 +29,16 @@ public class DrawingSurface extends PApplet {
 		character = new Character(loadImage("character.png"), 50,50);
 	}
 	
+	public void spawnNewWall(double x, double y, double width, double height) {
+		walls.add(Wall(x, y, width, height));
+	}
 	public void setup() {
 		
 	}
 	
 	public void draw() {
 		character.draw(this);
+		
 		
 		
 		

@@ -1,4 +1,8 @@
 package sprites;
+
+import java.awt.Shape;
+import java.awt.geom.Rectangle2D;
+
 /**
  * 
  * @author Taya Williams
@@ -52,7 +56,21 @@ public class Character extends Sprite{
 		
 		vy += gravity;
 		
+		Rectangle2D.Double strechY = new Rectangle2D.Double(getX(),Math.min(getY(),getY() + vy),width,height+Math.abs(vy));
+
+		
+		if (vy > 0) {
+			Shape standingSurface = null;
+			for (Shape s : walls) {
+				if (s.intersects(strechY)) {
+					standingSurface = s;
+					standing();
+				}
+		
 	}
+	
+
+		}
 	
 	
 }
