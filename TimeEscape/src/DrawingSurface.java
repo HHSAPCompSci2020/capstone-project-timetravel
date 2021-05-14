@@ -20,7 +20,7 @@ public class DrawingSurface extends PApplet {
 	public DrawingSurface() {
 		super();
 		keys = new ArrayList<Integer>();
-		spawnNewWall();
+		spawnNewWall(0, 300, 1000, 50);
 		spawnNewCharacter();
 	}
 	
@@ -38,8 +38,6 @@ public class DrawingSurface extends PApplet {
 	
 	public void draw() {
 		character.draw(this);
-		
-		
 		
 		
 		if (isPressed(KeyEvent.VK_A))

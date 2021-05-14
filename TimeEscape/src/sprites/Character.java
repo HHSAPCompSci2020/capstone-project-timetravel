@@ -57,7 +57,6 @@ public class Character extends Sprite{
 		vy += gravity;
 		
 		Rectangle2D.Double strechY = new Rectangle2D.Double(getX(),Math.min(getY(),getY() + vy),width,height+Math.abs(vy));
-
 		
 		if (vy > 0) {
 			Shape standingSurface = null;
