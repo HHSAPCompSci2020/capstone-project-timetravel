@@ -24,7 +24,8 @@ public class Main extends JFrame{
 		pMenuPanel = new PauseMenu(this);
 		mMenuPanel = new MainMenu(this);
 		drawPanel = new DrawingSurface();
-				
+		drawPanel.init();
+		
 		cardPanel.add(mMenuPanel, "m");
 		cardPanel.add(pMenuPanel, "p");
 		cardPanel.add(drawPanel, "d");

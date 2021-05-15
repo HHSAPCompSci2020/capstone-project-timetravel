@@ -1,4 +1,10 @@
 package sprites;
+
+import java.awt.geom.Rectangle2D;
+
+import processing.core.PApplet;
+import processing.core.PImage;
+
 /**
  * 
  * @author Taya Williams
@@ -12,12 +18,12 @@ public class Sprite extends Rectangle2D.Double{
 		image = img;
 	}
 	
-	public void getX() {
+	public double getX() {
 		return super.x;
 	}
 	
-	public void getY() {
-		return super.y
+	public double getY() {
+		return super.y;
 	}
 	
 	public void setX(double x) {

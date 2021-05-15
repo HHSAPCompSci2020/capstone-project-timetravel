@@ -1,9 +1,12 @@
 import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.event.KeyEvent;
+import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 
 import processing.core.PApplet;
+import sprites.*;
+import sprites.Character;
 
 /**
  * The surface which draws the sprites onto the GUI.
@@ -17,22 +20,24 @@ public class DrawingSurface extends PApplet {
 	
 	private ArrayList<Integer> keys;
 	private ArrayList<Wall> walls;
+	private Character character;
 
 	public DrawingSurface() {
 		super();
-		keys = new ArrayList<Integer>();
-		spawnNewWall(0, 300, 1000, 50);
+		keys = new ArrayList<>();
+		walls = new ArrayList<>();
+		walls.add(new Wall(0, 300, 1000, 50));
 		spawnNewCharacter();
 	}
 	
 	public void spawnNewCharacter() {
 		
-		character = new Character(loadImage("character.png"), 50,50);
+		character = new Character(loadImage("character.png"), 50.0,50.0);
 	}
 	
-	public void spawnNewWall(double x, double y, double width, double height) {
-		walls.add(Wall(x, y, width, height));
-	}
+//	public void spawnNewWall(double x, double y, double width, double height) {
+//		walls.add(new Wall(x, y, width, height));
+//	}
 	public void setup() {
 		
 	}
@@ -40,10 +45,9 @@ public class DrawingSurface extends PApplet {
 	public void draw() {
 		
 		fill(100);
-		for (Shape s : walls) {
-			if (s instanceof Wall) {
-				Rectangle r = (Rectangle)s;
-				rect(r.x,r.y,r.width,r.height);
+		for (Rectangle2D r : walls) {
+			if (r instanceof Wall) {
+				rect((float)r.getX(),(float)r.getY(), (float)r.getWidth(), (float)r.getHeight());
 			}
 		}
 		
@@ -54,10 +58,10 @@ public class DrawingSurface extends PApplet {
 			character.walk(-1);
 		if (isPressed(KeyEvent.VK_D))
 			character.walk(1);
-		if (isPressed(KeyEvent.VK_SPACE))
+		if (isPressed(KeyEvent.VK_SPACE) || isPressed(KeyEvent.VK_W))
 			character.jump();
-		if (isPressed(KeyEvent.VK_W))
-
+		
+		character.act();
 	}
 	
 	public void keyPressed() {

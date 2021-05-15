@@ -1,5 +1,7 @@
 package sprites;
 
+import processing.core.PImage;
+
 /**
  * 
  * @author Taya Williams
