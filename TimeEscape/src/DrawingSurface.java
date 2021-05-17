@@ -19,7 +19,7 @@ public class DrawingSurface extends PApplet {
 	private Rectangle screenRect;
 	
 	private ArrayList<Integer> keys;
-	private ArrayList<Wall> walls;
+	private ArrayList<Rectangle2D> walls;
 	private Character character;
 
 	public DrawingSurface() {
@@ -32,23 +32,27 @@ public class DrawingSurface extends PApplet {
 	
 	public void spawnNewCharacter() {
 		
-		character = new Character(loadImage("character.png"), 50.0,50.0);
+		character = new Character(loadImage("images/character.jpg"), 50.0,50.0);
 	}
 	
 //	public void spawnNewWall(double x, double y, double width, double height) {
 //		walls.add(new Wall(x, y, width, height));
 //	}
+	
 	public void setup() {
 		
 	}
 	
 	public void draw() {
 		
+		background(0,255,255);   
+		
 		fill(100);
-		for (Rectangle2D r : walls) {
-			if (r instanceof Wall) {
-				rect((float)r.getX(),(float)r.getY(), (float)r.getWidth(), (float)r.getHeight());
-			}
+		for (Rectangle2D w : walls) {
+			((Wall)w).draw(this);
+//			if (r instanceof Wall) {
+//				rect((float)r.getX(),(float)r.getY(), (float)r.getWidth(), (float)r.getHeight());
+//			}
 		}
 		
 		character.draw(this);
@@ -61,7 +65,7 @@ public class DrawingSurface extends PApplet {
 		if (isPressed(KeyEvent.VK_SPACE) || isPressed(KeyEvent.VK_W))
 			character.jump();
 		
-		character.act();
+		character.act(walls);
 	}
 	
 	public void keyPressed() {
