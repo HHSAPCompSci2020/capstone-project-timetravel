@@ -88,6 +88,7 @@ public class DrawingSurface extends PApplet {
 		
 //		time character act
 		
+		
 	}
 	
 	private void setTimeTravelPoint() {
