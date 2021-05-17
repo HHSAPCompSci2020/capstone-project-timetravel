@@ -11,7 +11,7 @@ import processing.core.PImage;
  *
  */
 public class Sprite extends Rectangle2D.Double{
-	private PImage image;
+	public PImage image;
 	
 	public Sprite(PImage img, double x, double y, double w, double h) {
 		super(x, y, w, h);

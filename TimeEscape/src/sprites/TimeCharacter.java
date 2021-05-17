@@ -15,4 +15,9 @@ public class TimeCharacter extends Character {
 		super(image, x, y);
 	}
 	
+	public TimeCharacter(Character c) {
+		super(c.image, c.getX(), c.getY());
+		vx = c.getvx();
+		vy = c.getvy();
+	}
 }

@@ -14,22 +14,34 @@ import processing.core.PImage;
 
 public class Character extends Sprite{
 
+	//these values are universal for all characters
+	
 	public static final int height = 50;
 	public static final int width = 25;
+	private static final double gravity = 0.75; //0.2
+	private static final double friction = 0.95;
+	private static final double jump = 15;
 	
-	private double vx, vy, gravity, friction;
+	protected double vx;
+	protected double vy;
 	private boolean onASurface;
-	private double jump;
-
+	
+	
+	
 	public Character(PImage img, double x, double y) {
 		super(img, x, y, width, height);
 		vx = 0;
 		vy = 0;
 		onASurface = false;
-		gravity = 0.75; //0.2
-		friction = 0.95;
-		jump = 15;
 	}
+	
+	public Character(PImage img, double x, double y, double vx, double vy, boolean onASurface) {
+		super(img, x, y, width, height);
+		this.vx = vx;
+		this.vy = vy;
+		this.onASurface = onASurface;
+	}
+	
 
 	public void walk(int dir) {
 		if (onASurface)
@@ -47,6 +59,18 @@ public class Character extends Sprite{
 
 	public void blocked() {
 		vx = 0;
+	}
+	
+	public double getvx() {
+		return vx;
+	}
+	
+	public double getvy() {
+		return vy;
+	}
+	
+	public boolean getonASurface() {
+		return onASurface;
 	}
 
 	public void act(ArrayList<Rectangle2D> walls) {
@@ -84,5 +108,9 @@ public class Character extends Sprite{
 		}
 
 	
+	}
+	
+	public Character getCharacterCopy() {
+		return new Character(image, x, y, vx, vy, onASurface);
 	}
 }
