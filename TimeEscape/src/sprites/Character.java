@@ -44,8 +44,7 @@ public class Character extends Sprite{
 	
 
 	public void walk(int dir) {
-		if (onASurface)
-			vx += dir/2.0; //1 is too fast, so divided by 2 and is perfect
+		vx += dir/2.0; //1 is too fast, so divided by 2 and is perfect
 	}
 
 	public void jump() {
@@ -84,8 +83,7 @@ public class Character extends Sprite{
 		this.setY(y);
 
 		vy *= friction;
-		if (onASurface)
-			vx *= friction;
+		vx *= friction;
 
 		vy += gravity;
 

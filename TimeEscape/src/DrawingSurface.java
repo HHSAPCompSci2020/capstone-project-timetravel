@@ -19,18 +19,24 @@ public class DrawingSurface extends PApplet {
 	private Rectangle screenRect;
 	
 	private ArrayList<Integer> keys;
-	private TimeRecordedActions timeRecordedActions;
 	private ArrayList<Rectangle2D> walls;
 	private Character character;
+	
+	private TimeRecordedActions timeRecordedActions;
 	private TimeCharacter tc;
-//	private boolean timeTravelSet;
 	private boolean timeTraveling;
+	private boolean recording;
 
 	public DrawingSurface() {
 		super();
-//		timeTravelSet = false;
+		
 		keys = new ArrayList<Integer>();
-		timeRecordedActions = null;
+	
+		timeRecordedActions = new TimeRecordedActions(character);
+		timeTraveling = false;
+		recording = false;
+		tc = null;
+		
 		walls = new ArrayList<>();
 		walls.add(new Wall(0, 300, 1000, 50));
 		spawnNewCharacter();
@@ -41,8 +47,8 @@ public class DrawingSurface extends PApplet {
 		character = new Character(loadImage("images/character.jpg"), 50.0,50.0);
 	}
 	
-	private void spawnTimeCharacter() {
-		tc = new TimeCharacter(timeRecordedActions.getInitialCharacterSnapshot());
+	private void spawnTimeCharacter(Character characterSnapshot) {
+		tc = new TimeCharacter(characterSnapshot);
 	}
 //	public void spawnNewWall(double x, double y, double width, double height) {
 //		walls.add(new Wall(x, y, width, height));
@@ -77,35 +83,72 @@ public class DrawingSurface extends PApplet {
 			setTimeTravelPoint();
 		if (isPressed(KeyEvent.VK_T))
 			timeTravel();
-		
-		
-		if (timeRecordedActions != null) {
-			timeRecordedActions.add(keyCode);
-		}
-		
+
 //		character act
 		character.act(walls);
 		
-//		time character act
+		if (recording) {
+			super.noLoop();
+			try {
+				Thread.sleep(10);
+			} catch (Throwable t) {}
+			super.loop();
+			
+			timeRecordedActions.add(keyCode);
+		} else if (timeTraveling) {
+			//replaying if timeTraveling
+			
+			super.noLoop();
+			try {
+				Thread.sleep(10);
+			} catch (Throwable t) {}
+			super.loop();
+			
+			tc.draw(this);
+			System.out.println("XXX currentFrame=" + timeRecordedActions.currentFrame + ", action=" + (char)(int)timeRecordedActions.keys.get(timeRecordedActions.currentFrame));
+			int action = timeRecordedActions.replayActions();
+			
+			if (action == KeyEvent.VK_A)
+				tc.walk(-1);
+			if (action == KeyEvent.VK_D)
+				tc.walk(1);
+			if (action == KeyEvent.VK_SPACE || action == KeyEvent.VK_W)
+				tc.jump();
+			if (action == KeyEvent.VK_T || action == -1) {
+				timeTraveling = false;
+				
+			}
+//			time character act
+			tc.act(walls);
+		}
+	
 		
+
 		
 	}
 	
-	private void setTimeTravelPoint() {
-		if (timeRecordedActions == null) {
-			timeRecordedActions = new TimeRecordedActions(character);
+	//Recording and replaying
+	
+	private boolean setTimeTravelPoint() {
+		if (!recording) {
+			recording = true;
+			timeRecordedActions.setCharacterSnapshot(character.getCharacterCopy());
 			System.out.println("set");
-		}
+			return true;
+		} else return false;
 	}
 	
-	private void timeTravel() {
-		if(timeRecordedActions != null) {
+	private boolean timeTravel() {
+		if(recording) {
+			recording = false;
 			timeTraveling = true;
-			spawnTimeCharacter();
-			timeRecordedActions = null;
+			spawnTimeCharacter(timeRecordedActions.getInitialCharacterSnapshot());
 			System.out.println("travel");
-		}
+			return true;
+		} else return false;
 	}
+	
+	//key methods
 	
 	public void keyPressed() {
 		keys.add(keyCode);
@@ -121,12 +164,12 @@ public class DrawingSurface extends PApplet {
 			keys.remove(new Integer(keyCode));
 	}
 	
-	
-
 	public boolean isPressed(Integer code) {
 		return keys.contains(code);
 	}
 	
+	
+//	RECORD POSITION RATHER THAN ACTION, MORE RELIABLE!!!!!!!!
 	private class TimeRecordedActions {
 		private ArrayList<Integer> keys;
 		private int currentFrame;
@@ -138,18 +181,28 @@ public class DrawingSurface extends PApplet {
 			character = c;
 		}
 		
-		public int getKeyAtFrame() {
+		public void setCharacterSnapshot(Character c) {
+			character = c;
+		}
+		
+		public int replayActions() {
+			if (updateFrame()) return getKeyAtFrame();
+			else return -1;
+		}
+		
+		private int getKeyAtFrame() {
 			return keys.get(currentFrame);
 		}
 		
-		public boolean updateFrame() {
+		private boolean updateFrame() {
 			if (currentFrame < keys.size() - 1) {
 				currentFrame++;
 				return true;
-			} else if (currentFrame == keys.size() - 1)
-				keys.clear();
+			} else {
+				reset();
+				return false;
+			}
 			
-			return false;
 		}
 		
 		public void add(int code) {
@@ -162,6 +215,12 @@ public class DrawingSurface extends PApplet {
 		
 		public Character getInitialCharacterSnapshot() {
 			return character;
+		}
+		
+		public void reset() {
+			keys.clear();
+			currentFrame = 0;
+			System.out.println("actions cleared");
 		}
 	}
 }
