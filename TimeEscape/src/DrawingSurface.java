@@ -1,6 +1,8 @@
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.event.KeyEvent;
+import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 
@@ -17,62 +19,64 @@ import sprites.Character;
 public class DrawingSurface extends PApplet {
 
 	private Rectangle screenRect;
-	
+
 	private ArrayList<Integer> keys;
 	private ArrayList<Rectangle2D> walls;
 	private Character character;
-	
-	private TimeRecordedActions timeRecordedActions;
+
+	//	private TimeRecordedActions timeRecordedActions;
+	private PositionRecord recordedPositions;
 	private TimeCharacter tc;
 	private boolean timeTraveling;
 	private boolean recording;
 
 	public DrawingSurface() {
 		super();
-		
+
 		keys = new ArrayList<Integer>();
-	
-		timeRecordedActions = new TimeRecordedActions(character);
+
+		//		timeRecordedActions = new TimeRecordedActions(character);
+		recordedPositions = new PositionRecord();
 		timeTraveling = false;
 		recording = false;
 		tc = null;
-		
+
 		walls = new ArrayList<>();
 		walls.add(new Wall(0, 300, 1000, 50));
 		spawnNewCharacter();
 	}
-	
+
 	public void spawnNewCharacter() {
-		
+
 		character = new Character(loadImage("images/character.jpg"), 50.0,50.0);
 	}
-	
+
 	private void spawnTimeCharacter(Character characterSnapshot) {
 		tc = new TimeCharacter(characterSnapshot);
 	}
-//	public void spawnNewWall(double x, double y, double width, double height) {
-//		walls.add(new Wall(x, y, width, height));
-//	}
-	
+	//	public void spawnNewWall(double x, double y, double width, double height) {
+	//		walls.add(new Wall(x, y, width, height));
+	//	}
+
 	public void setup() {
-		
+
 	}
-	
+
 	public void draw() {
-		
+
 		background(0,255,255);   
-		
+
 		fill(100);
 		for (Rectangle2D w : walls) {
 			((Wall)w).draw(this);
-//			if (r instanceof Wall) {
-//				rect((float)r.getX(),(float)r.getY(), (float)r.getWidth(), (float)r.getHeight());
-//			}
+			//			if (r instanceof Wall) {
+			//				rect((float)r.getX(),(float)r.getY(), (float)r.getWidth(), (float)r.getHeight());
+			//			}
 		}
-		
+
 		character.draw(this);
-		
-		
+
+
 		if (isPressed(KeyEvent.VK_A))
 			character.walk(-1);
 		if (isPressed(KeyEvent.VK_D))
@@ -84,143 +88,186 @@ public class DrawingSurface extends PApplet {
 		if (isPressed(KeyEvent.VK_T))
 			timeTravel();
 
-//		character act
+		//		character act
 		character.act(walls);
-		
+
 		if (recording) {
-			super.noLoop();
-			try {
-				Thread.sleep(10);
-			} catch (Throwable t) {}
-			super.loop();
-			
-			timeRecordedActions.add(keyCode);
+			recordedPositions.add(character.getX(), character.getY());
+			//			timeRecordedActions.add(keyCode);
 		} else if (timeTraveling) {
 			//replaying if timeTraveling
-			
-			super.noLoop();
-			try {
-				Thread.sleep(10);
-			} catch (Throwable t) {}
-			super.loop();
-			
-			tc.draw(this);
-			System.out.println("XXX currentFrame=" + timeRecordedActions.currentFrame + ", action=" + (char)(int)timeRecordedActions.keys.get(timeRecordedActions.currentFrame));
-			int action = timeRecordedActions.replayActions();
-			
-			if (action == KeyEvent.VK_A)
-				tc.walk(-1);
-			if (action == KeyEvent.VK_D)
-				tc.walk(1);
-			if (action == KeyEvent.VK_SPACE || action == KeyEvent.VK_W)
-				tc.jump();
-			if (action == KeyEvent.VK_T || action == -1) {
-				timeTraveling = false;
-				
-			}
-//			time character act
-			tc.act(walls);
-		}
-	
-		
 
-		
+			tc.draw(this);
+			Point2D.Double p = recordedPositions.replayPositions();
+			
+			if (p != null) tc.setPosition(p);
+			else timeTraveling = false;
+
+			//			System.out.println("XXX currentFrame=" + timeRecordedActions.currentFrame + ", action=" + (char)(int)timeRecordedActions.keys.get(timeRecordedActions.currentFrame));
+			//			int action = timeRecordedActions.replayActions();
+			//			
+			//			if (action == KeyEvent.VK_A)
+			//				tc.walk(-1);
+			//			if (action == KeyEvent.VK_D)
+			//				tc.walk(1);
+			//			if (action == KeyEvent.VK_SPACE || action == KeyEvent.VK_W)
+			//				tc.jump();
+			//			if (action == KeyEvent.VK_T || action == -1) {
+			//				timeTraveling = false;
+			//				
+			//			}
+			//			time character act
+			//			tc.act(walls);
+		}
+
 	}
-	
+
 	//Recording and replaying
-	
+
 	private boolean setTimeTravelPoint() {
 		if (!recording) {
 			recording = true;
-			timeRecordedActions.setCharacterSnapshot(character.getCharacterCopy());
+			recordedPositions.setCharacterSnapshot(character.getCharacterCopy());
 			System.out.println("set");
 			return true;
 		} else return false;
 	}
-	
+
 	private boolean timeTravel() {
 		if(recording) {
 			recording = false;
 			timeTraveling = true;
-			spawnTimeCharacter(timeRecordedActions.getInitialCharacterSnapshot());
+			spawnTimeCharacter(recordedPositions.getInitialCharacterSnapshot());
 			System.out.println("travel");
 			return true;
 		} else return false;
 	}
-	
+
 	//key methods
-	
+
 	public void keyPressed() {
 		keys.add(keyCode);
 	}
 
 	public void keyReleased() {
 		if (keyCode == KeyEvent.VK_0) {
-			for (int k : timeRecordedActions.getKeys()) {
+			for (Point2D k : recordedPositions.getPoints()) {
 				System.out.println(k);
 			}
 		}
 		while(keys.contains(keyCode))
 			keys.remove(new Integer(keyCode));
 	}
-	
+
 	public boolean isPressed(Integer code) {
 		return keys.contains(code);
 	}
-	
-	
-//	RECORD POSITION RATHER THAN ACTION, MORE RELIABLE!!!!!!!!
-	private class TimeRecordedActions {
-		private ArrayList<Integer> keys;
+
+	private class PositionRecord {
+		
+		private ArrayList<Point2D.Double> points;
 		private int currentFrame;
 		private Character character;
-		
-		public TimeRecordedActions(Character c) {
+
+		public PositionRecord() {
 			currentFrame = 0;
-			keys = new ArrayList<>();
-			character = c;
+			points = new ArrayList<>();
 		}
-		
-		public void setCharacterSnapshot(Character c) {
-			character = c;
+
+		public Point2D.Double replayPositions() {
+			if (updateFrame()) return points.get(currentFrame);
+			else return null;
 		}
-		
-		public int replayActions() {
-			if (updateFrame()) return getKeyAtFrame();
-			else return -1;
-		}
-		
-		private int getKeyAtFrame() {
-			return keys.get(currentFrame);
-		}
-		
+
 		private boolean updateFrame() {
-			if (currentFrame < keys.size() - 1) {
+			if (currentFrame < points.size() - 1) {
 				currentFrame++;
 				return true;
 			} else {
 				reset();
 				return false;
 			}
-			
 		}
-		
-		public void add(int code) {
-			keys.add(code);
+
+		public void add(double x, double y) {
+			points.add(new Point2D.Double(x, y));
 		}
-		
-		public ArrayList<Integer> getKeys() {
-			return keys;
+
+		public ArrayList<Point2D.Double> getPoints() {
+			return points;
 		}
-		
+
+		public void setCharacterSnapshot(Character c) {
+			character = c;
+		}
+
 		public Character getInitialCharacterSnapshot() {
 			return character;
 		}
-		
+
 		public void reset() {
-			keys.clear();
+			points.clear();
 			currentFrame = 0;
 			System.out.println("actions cleared");
 		}
 	}
+
+
+	//	unreliable replay
+
+	//	private class TimeRecordedActions {
+	//		private ArrayList<Integer> keys;
+	//		private int currentFrame;
+	//		private Character character;
+	//		
+	//		public TimeRecordedActions(Character c) {
+	//			currentFrame = 0;
+	//			keys = new ArrayList<>();
+
+
+	//			character = c;
+	//		}
+	//		
+	//		public void setCharacterSnapshot(Character c) {
+	//			character = c;
+	//		}
+	//		
+	//		public int replayActions() {
+	//			if (updateFrame()) return getKeyAtFrame();
+	//			else return -1;
+	//		}
+	//		
+	//		private int getKeyAtFrame() {
+	//			return keys.get(currentFrame);
+	//		}
+	//		
+	//		private boolean updateFrame() {
+	//			if (currentFrame < keys.size() - 1) {
+	//				currentFrame++;
+	//				return true;
+	//			} else {
+	//				reset();
+	//				return false;
+	//			}
+	//			
+	//		}
+	//		
+	//		public void add(int code) {
+	//			keys.add(code);
+	//		}
+	//		
+	//		public ArrayList<Integer> getKeys() {
+	//			return keys;
+	//		}
+	//		
+	//		public Character getInitialCharacterSnapshot() {
+	//			return character;
+	//		}
+	//		
+	//		public void reset() {
+	//			keys.clear();
+	//			currentFrame = 0;
+	//			System.out.println("actions cleared");
+	//		}
+	//	}
 }

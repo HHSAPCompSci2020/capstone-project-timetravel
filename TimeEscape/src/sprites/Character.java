@@ -1,6 +1,7 @@
 package sprites;
 
 import java.awt.Shape;
+import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 
@@ -42,6 +43,10 @@ public class Character extends Sprite{
 		this.onASurface = onASurface;
 	}
 	
+	public void setPosition(Point2D.Double p) {
+		x = p.getX();
+		y = p.getY();
+	}
 
 	public void walk(int dir) {
 		vx += dir/2.0; //1 is too fast, so divided by 2 and is perfect
