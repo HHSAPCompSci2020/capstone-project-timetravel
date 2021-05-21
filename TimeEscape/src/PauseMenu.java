@@ -1,5 +1,7 @@
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
@@ -10,7 +12,7 @@ import javax.swing.JPanel;
  * @version 5/7/2021
  */
 
-public class PauseMenu extends JPanel implements ActionListener {
+public class PauseMenu extends JPanel implements ActionListener, KeyListener {
 
 	Main m;
 	
@@ -28,4 +30,24 @@ public class PauseMenu extends JPanel implements ActionListener {
 		m.changePanel();
 	}
 
+	@Override
+	public void keyTyped(KeyEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void keyPressed(KeyEvent e) {
+		// TODO Auto-generated method stub
+		System.out.println("keyPressed");
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e) {
+		// TODO Auto-generated method stub
+		System.out.println(e.getExtendedKeyCode());
+		if (e.getExtendedKeyCode() == KeyEvent.VK_ESCAPE) {
+			System.out.println("yes");
+		}
+	}
 }
