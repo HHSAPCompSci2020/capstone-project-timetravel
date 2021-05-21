@@ -43,6 +43,8 @@ public class Main extends JFrame{
 	
 	public void changePanel() {
 		((CardLayout)cardPanel.getLayout()).next(cardPanel);
-		drawPanel.requestFocus();
+		
+//		For some reason, requestFocus() causing problems for PApplet
+//		drawPanel.requestFocus();
 	}
 }

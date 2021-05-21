@@ -7,6 +7,7 @@ import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 
 import processing.core.PApplet;
+import processing.core.PImage;
 import sprites.*;
 import sprites.Character;
 
@@ -44,12 +45,14 @@ public class DrawingSurface extends PApplet {
 		walls = new ArrayList<>();
 		walls.add(new Wall(0, 300, 1000, 50));
 		walls.add(new Wall(500, 0, 50, 1000));
-		spawnNewCharacter();
+		
+		
 	}
 
 	public void spawnNewCharacter() {
-
-		character = new Character(loadImage("images/character.jpg"), 50.0,50.0);
+		PImage img = loadImage("images/stickman.png");
+		if (img == null) System.out.println("image loading error");
+		character = new Character(img, 50.0,50.0);
 	}
 
 	private void spawnTimeCharacter(Character characterSnapshot) {
@@ -59,7 +62,9 @@ public class DrawingSurface extends PApplet {
 	//		walls.add(new Wall(x, y, width, height));
 	//	}
 
-	public void setup() {}
+	public void setup() {
+		spawnNewCharacter();
+	}
 
 	public void draw() {
 
