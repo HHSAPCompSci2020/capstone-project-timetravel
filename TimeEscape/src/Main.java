@@ -1,6 +1,8 @@
 import java.awt.CardLayout;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import processing.core.PApplet;
 
 public class Main extends JFrame{
@@ -26,14 +28,16 @@ public class Main extends JFrame{
 		drawPanel = new DrawingSurface();
 		drawPanel.init();
 		
-		cardPanel.add(mMenuPanel, "m");
-		cardPanel.add(pMenuPanel, "p");
-		cardPanel.add(drawPanel, "d");
+		cardPanel.add(mMenuPanel, "1");
+		cardPanel.add(pMenuPanel, "2");
+		cardPanel.add(drawPanel, "3");
 		
 		add(cardPanel);
 		
-		setVisible(true);
 		
+		setVisible(true);
+		setFocusable(true);
+		requestFocus();
 		
 	}
 	
@@ -42,9 +46,13 @@ public class Main extends JFrame{
 	}
 	
 	public void changePanel() {
+		
+//		((CardLayout)cardPanel.getLayout()).next(cardPanel);
 		((CardLayout)cardPanel.getLayout()).next(cardPanel);
 		
 //		For some reason, requestFocus() causing problems for PApplet
-//		drawPanel.requestFocus();
+		drawPanel.requestFocus();
 	}
+
+	
 }
