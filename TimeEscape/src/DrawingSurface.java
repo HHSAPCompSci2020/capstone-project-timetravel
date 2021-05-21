@@ -55,6 +55,7 @@ public class DrawingSurface extends PApplet {
 		character = new Character(img, 50.0,50.0);
 	}
 
+
 	private void spawnTimeCharacter(Character characterSnapshot) {
 		tc = new TimeCharacter(characterSnapshot);
 	}
