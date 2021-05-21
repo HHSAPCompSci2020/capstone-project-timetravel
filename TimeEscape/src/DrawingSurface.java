@@ -21,7 +21,7 @@ public class DrawingSurface extends PApplet {
 	private Rectangle screenRect;
 
 	private ArrayList<Integer> keys;
-	private ArrayList<Rectangle2D> walls;
+	private ArrayList<Shape> walls;
 	private Character character;
 
 	//	private TimeRecordedActions timeRecordedActions;
@@ -43,6 +43,7 @@ public class DrawingSurface extends PApplet {
 
 		walls = new ArrayList<>();
 		walls.add(new Wall(0, 300, 1000, 50));
+		walls.add(new Wall(500, 0, 50, 1000));
 		spawnNewCharacter();
 	}
 
@@ -58,17 +59,15 @@ public class DrawingSurface extends PApplet {
 	//		walls.add(new Wall(x, y, width, height));
 	//	}
 
-	public void setup() {
-
-	}
+	public void setup() {}
 
 	public void draw() {
 
 		background(0,255,255);   
 
 		fill(100);
-		for (Rectangle2D w : walls) {
-			((Wall)w).draw(this);
+		for (Shape w : walls) {
+			if (w instanceof Wall) ((Wall)w).draw(this);
 			//			if (r instanceof Wall) {
 			//				rect((float)r.getX(),(float)r.getY(), (float)r.getWidth(), (float)r.getHeight());
 			//			}
@@ -101,7 +100,10 @@ public class DrawingSurface extends PApplet {
 			Point2D.Double p = recordedPositions.replayPositions();
 			
 			if (p != null) tc.setPosition(p);
-			else timeTraveling = false;
+			else {
+				timeTraveling = false;
+				walls.remove(tc);
+			}
 
 			//			System.out.println("XXX currentFrame=" + timeRecordedActions.currentFrame + ", action=" + (char)(int)timeRecordedActions.keys.get(timeRecordedActions.currentFrame));
 			//			int action = timeRecordedActions.replayActions();
@@ -139,6 +141,7 @@ public class DrawingSurface extends PApplet {
 			timeTraveling = true;
 			spawnTimeCharacter(recordedPositions.getInitialCharacterSnapshot());
 			System.out.println("travel");
+			walls.add(tc);
 			return true;
 		} else return false;
 	}
@@ -151,8 +154,8 @@ public class DrawingSurface extends PApplet {
 
 	public void keyReleased() {
 		if (keyCode == KeyEvent.VK_0) {
-			for (Point2D k : recordedPositions.getPoints()) {
-				System.out.println(k);
+			for (Shape s : walls) {
+				System.out.println(s);
 			}
 		}
 		while(keys.contains(keyCode))

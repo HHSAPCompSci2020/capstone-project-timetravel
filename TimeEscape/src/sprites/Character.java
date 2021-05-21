@@ -1,5 +1,6 @@
 package sprites;
 
+import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
@@ -77,15 +78,13 @@ public class Character extends Sprite{
 		return onASurface;
 	}
 
-	public void act(ArrayList<Rectangle2D> walls) {
+	public void act(ArrayList<Shape> walls) {
 
-		double x = getX();
-		x += vx;
-		this.setX(x);
+//		Y-axis calculations:
 
 		double y = getY();
 		y += vy;
-		this.setY(y);
+		
 
 		vy *= friction;
 		vx *= friction;
@@ -103,14 +102,84 @@ public class Character extends Sprite{
 					onASurface = true;
 					standingSurface = s;
 					standing();
+//					System.out.println(s + "---stopped");
 				}
-
 			}
-
-
 		}
+		
+//		if (yVelocity > 0) {
+//			Shape standingSurface = null;
+//			for (Shape s : obstacles) {
+//				if (s.intersects(strechY)) {
+//					onASurface = true;
+//					standingSurface = s;
+//					yVelocity = 0;
+//				}
+//			}
+//			if (standingSurface != null) {
+//				Rectangle r = standingSurface.getBounds();
+//				yCoord2 = r.getY()-height;
+//			}
+//		} else if (yVelocity < 0) {
+//			Shape headSurface = null;
+//			for (Shape s : obstacles) {
+//				if (s.intersects(strechY)) {
+//					headSurface = s;
+//					yVelocity = 0;
+//				}
+//			}
+//			if (headSurface != null) {
+//				Rectangle r = headSurface.getBounds();
+//				yCoord2 = r.getY()+r.getHeight();
+//			}
+//		}
+//
+//		if (Math.abs(yVelocity) < .5)
+//			yVelocity = 0;
 
-	
+		this.setY(y);
+		
+//		X-axis calculations:
+		
+		double x = getX();
+		x += vx;
+		
+		
+//		double xCoord2 = xCoord + xVelocity;
+//
+//		Rectangle2D.Double strechX = new Rectangle2D.Double(Math.min(xCoord,xCoord2),yCoord2,width+Math.abs(xVelocity),height);
+//
+//		if (xVelocity > 0) {
+//			Shape rightSurface = null;
+//			for (Shape s : obstacles) {
+//				if (s.intersects(strechX)) {
+//					rightSurface = s;
+//					xVelocity = 0;
+//				}
+//			}
+//			if (rightSurface != null) {
+//				Rectangle r = rightSurface.getBounds();
+//				xCoord2 = r.getX()-width;
+//			}
+//		} else if (xVelocity < 0) {
+//			Shape leftSurface = null;
+//			for (Shape s : obstacles) {
+//				if (s.intersects(strechX)) {
+//					leftSurface = s;
+//					xVelocity = 0;
+//				}
+//			}
+//			if (leftSurface != null) {
+//				Rectangle r = leftSurface.getBounds();
+//				xCoord2 = r.getX()+r.getWidth();
+//			}
+//		}
+//
+//
+//		if (Math.abs(xVelocity) < .5)
+//			xVelocity = 0;
+//
+		this.setX(x);
 	}
 	
 	public Character getCharacterCopy() {
