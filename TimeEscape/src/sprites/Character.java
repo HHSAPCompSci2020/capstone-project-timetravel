@@ -61,6 +61,10 @@ public class Character extends Sprite{
 	public void standing() {
 		vy = 0;
 	}
+	
+	public void verticallyBlocked() {
+		vy = 0;
+	}
 
 	public void blocked() {
 		vx = 0;
@@ -80,10 +84,13 @@ public class Character extends Sprite{
 
 	public void act(ArrayList<Shape> walls) {
 
-//		Y-axis calculations:
-
 		double y = getY();
 		y += vy;
+		this.setY(y);
+		
+		double x = getX();
+		x += vx;
+		this.setX(x);
 		
 
 		vy *= friction;
@@ -92,9 +99,10 @@ public class Character extends Sprite{
 		vy += gravity;
 
 		Rectangle2D.Double strechY = new Rectangle2D.Double(getX(),Math.min(getY(),getY() + vy),width,height+Math.abs(vy));
-
+		Rectangle2D.Double strechX = new Rectangle2D.Double(Math.min(getX(),getY()),getY(),width+Math.abs(vx),height);
 		onASurface = false;
 		
+		//FLOOR
 		if (vy > 0) {
 			Shape standingSurface = null;
 			for (Shape s : walls) {
@@ -107,79 +115,38 @@ public class Character extends Sprite{
 			}
 		}
 		
-//		if (yVelocity > 0) {
-//			Shape standingSurface = null;
-//			for (Shape s : obstacles) {
-//				if (s.intersects(strechY)) {
-//					onASurface = true;
-//					standingSurface = s;
-//					yVelocity = 0;
-//				}
-//			}
-//			if (standingSurface != null) {
-//				Rectangle r = standingSurface.getBounds();
-//				yCoord2 = r.getY()-height;
-//			}
-//		} else if (yVelocity < 0) {
-//			Shape headSurface = null;
-//			for (Shape s : obstacles) {
-//				if (s.intersects(strechY)) {
-//					headSurface = s;
-//					yVelocity = 0;
-//				}
-//			}
-//			if (headSurface != null) {
-//				Rectangle r = headSurface.getBounds();
-//				yCoord2 = r.getY()+r.getHeight();
-//			}
-//		}
-//
-//		if (Math.abs(yVelocity) < .5)
-//			yVelocity = 0;
-
-		this.setY(y);
+		//RIGHT WALL
+		if(vx > 0) {
+			Shape rightSurface = null;
+			for (Shape s: walls) {
+				if(s.intersects(strechX)) {
+					rightSurface = s;
+					blocked();
+				}
+			}
+		}
 		
-//		X-axis calculations:
+		//LEFT WALL
+		if(vx < 0) {
+			Shape leftSurface = null;
+			for(Shape s: walls) {
+				if(s.intersects(strechX)) {
+					leftSurface = s;
+					blocked();
+				}
+			}
+		}
 		
-		double x = getX();
-		x += vx;
-		
-		
-//		double xCoord2 = xCoord + xVelocity;
-//
-//		Rectangle2D.Double strechX = new Rectangle2D.Double(Math.min(xCoord,xCoord2),yCoord2,width+Math.abs(xVelocity),height);
-//
-//		if (xVelocity > 0) {
-//			Shape rightSurface = null;
-//			for (Shape s : obstacles) {
-//				if (s.intersects(strechX)) {
-//					rightSurface = s;
-//					xVelocity = 0;
-//				}
-//			}
-//			if (rightSurface != null) {
-//				Rectangle r = rightSurface.getBounds();
-//				xCoord2 = r.getX()-width;
-//			}
-//		} else if (xVelocity < 0) {
-//			Shape leftSurface = null;
-//			for (Shape s : obstacles) {
-//				if (s.intersects(strechX)) {
-//					leftSurface = s;
-//					xVelocity = 0;
-//				}
-//			}
-//			if (leftSurface != null) {
-//				Rectangle r = leftSurface.getBounds();
-//				xCoord2 = r.getX()+r.getWidth();
-//			}
-//		}
-//
-//
-//		if (Math.abs(xVelocity) < .5)
-//			xVelocity = 0;
-//
-		this.setX(x);
+		//ROOF
+		if(vy < 0) {
+			Shape roofSurface = null;
+			for(Shape s: walls) {
+				if(s.intersects(strechY)) {
+					roofSurface = s;
+					verticallyBlocked();
+				}
+			}
+		}
 	}
 	
 	public Character getCharacterCopy() {
