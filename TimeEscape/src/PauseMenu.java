@@ -8,22 +8,25 @@ import java.awt.event.KeyListener;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 /**
- * Represents the pause menu.
+ * Represents the pause menu screen.
  * 
  * @author Ethan Chang
- * @version 5/7/2021
+ * @version 5/22/2021
  */
 
 public class PauseMenu extends Screen {
 
+	public static final int WIDTH = 800;
+	public static final int HEIGHT = 600;
+	
 	private DrawingSurface surface;
 	private Rectangle button;
 	
 	public PauseMenu(DrawingSurface surface) {
-		super(800, 600);
+		super(WIDTH, HEIGHT);
 		this.surface = surface;
 		
-		button = new Rectangle(800/2-100,600/2-50,200,100);
+		button = new Rectangle(WIDTH/2-100,HEIGHT/2-50,200,100);
 	}
 	
 	@Override

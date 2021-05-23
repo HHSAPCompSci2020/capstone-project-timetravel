@@ -7,10 +7,10 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 
 /**
- * Represents the main menu.
+ * Represents the main menu screen.
  * 
  * @author Ethan Chang
- * @version 5/7/2021
+ * @version 5/22/2021
  */
 
 public class MainMenu extends Screen {

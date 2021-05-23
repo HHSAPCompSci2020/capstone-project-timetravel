@@ -8,6 +8,13 @@ import sprites.Character;
 import sprites.TimeCharacter;
 import sprites.Wall;
 
+/**
+ * Represents the game screen.
+ * 
+ * @author Ethan Chang
+ * @version 5/22/2021
+ */
+
 public class GameScreen extends Screen {
 
 
@@ -94,7 +101,7 @@ public class GameScreen extends Screen {
 	
 	public void spawnNewCharacter() {
 		PImage img = surface.loadImage("images/stickman.png");
-		if (img == null) System.out.println("image loading error");
+//		if (img == null) System.out.println("image loading error");
 		character = new Character(img, 50.0,50.0);
 	}
 
@@ -106,7 +113,7 @@ public class GameScreen extends Screen {
 		if (!recording) {
 			recording = true;
 			recordedPositions.setCharacterSnapshot(character.getCharacterCopy());
-			System.out.println("set");
+//			System.out.println("set");
 			return true;
 		} else return false;
 	}
@@ -116,7 +123,7 @@ public class GameScreen extends Screen {
 			recording = false;
 			timeTraveling = true;
 			spawnTimeCharacter(recordedPositions.getInitialCharacterSnapshot());
-			System.out.println("travel");
+//			System.out.println("travel");
 			walls.add(tc);
 			return true;
 		} else return false;

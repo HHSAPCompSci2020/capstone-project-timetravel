@@ -5,7 +5,7 @@ import processing.core.PApplet;
 
 
 /**
- * The surface which draws the sprites onto the GUI.
+ * This class represents the GUI and draws the screens and detects peripheral input.
  * 
  * @author Ethan Chang
  * @version 5/7/2021
@@ -24,7 +24,6 @@ public class DrawingSurface extends PApplet implements ScreenSwitcher {
 
 	
 	public DrawingSurface() {
-		
 		screens = new ArrayList<Screen>();
 		
 		keys = new ArrayList<Integer>();
@@ -39,9 +38,8 @@ public class DrawingSurface extends PApplet implements ScreenSwitcher {
 
 
 	public void settings() {
-		System.out.println(activeScreen);
-//		size(activeScreen.DRAWING_WIDTH, activeScreen.DRAWING_HEIGHT);
-
+		size(activeScreen.DRAWING_WIDTH, activeScreen.DRAWING_HEIGHT);
+	}
 	
 	public void setup() {
 		surface.setResizable(true);
