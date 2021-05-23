@@ -1,3 +1,5 @@
+import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -11,22 +13,41 @@ import javax.swing.JPanel;
  * @version 5/7/2021
  */
 
-public class MainMenu extends JPanel implements ActionListener {
+public class MainMenu extends Screen {
 
-	Main m;
+	private DrawingSurface surface;
 	
-	public MainMenu(Main m) {
-		this.m = m;
-		JButton button = new JButton("Start");
-		button.addActionListener(this);
-		add(button);
+	private Rectangle button;
+	
+	public MainMenu(DrawingSurface surface) {
+//		super(surface.width, surface.height);
+		super(800, 600);
+		this.surface = surface;
+		
+		button = new Rectangle(800/2-100,600/2-50,200,100);
 	}
 	
 	@Override
-	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
-		System.out.println(e.toString());
-		m.changePanel();
+	public void draw() {
+
+		surface.pushStyle();
+		
+		surface.background(255,255,255);
+		
+		surface.rect(button.x, button.y, button.width, button.height, 10, 10, 10, 10);
+		surface.fill(0);
+		String str = "Start";
+		float w = surface.textWidth(str);
+		surface.text(str, button.x+button.width/2-w/2, button.y+button.height/2);
+		
+		surface.popStyle();
+	}
+	
+	@Override
+	public void mousePressed() {
+		Point p = surface.actualCoordinatesToAssumed(new Point(surface.mouseX,surface.mouseY));
+		if (button.contains(p))
+			surface.switchScreen(ScreenSwitcher.GAME);
 	}
 
 }

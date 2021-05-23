@@ -1,3 +1,5 @@
+import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -12,42 +14,39 @@ import javax.swing.JPanel;
  * @version 5/7/2021
  */
 
-public class PauseMenu extends JPanel implements ActionListener, KeyListener {
+public class PauseMenu extends Screen {
 
-	Main m;
+	private DrawingSurface surface;
+	private Rectangle button;
 	
-	public PauseMenu(Main m) {
-		this.m = m;
-		JButton button = new JButton("Resume");
-		button.addActionListener(this);
-		add(button);
+	public PauseMenu(DrawingSurface surface) {
+		super(800, 600);
+		this.surface = surface;
+		
+		button = new Rectangle(800/2-100,600/2-50,200,100);
 	}
 	
 	@Override
-	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
-		System.out.println(e.toString());
-		m.changePanel();
-	}
+	public void draw() {
 
-	@Override
-	public void keyTyped(KeyEvent e) {
-		// TODO Auto-generated method stub
+		surface.pushStyle();
+		
+		surface.rect(button.x, button.y, button.width, button.height, 10, 10, 10, 10);
+		surface.fill(255,255,255);
+		String str = "Resume";
+		float w = surface.textWidth(str);
+		surface.text(str, button.x+button.width/2-w/2, button.y+button.height/2);
+		
+		surface.popStyle();
 		
 	}
-
+	
 	@Override
-	public void keyPressed(KeyEvent e) {
-		// TODO Auto-generated method stub
-		System.out.println("keyPressed");
+	public void mousePressed() {
+		Point p = surface.actualCoordinatesToAssumed(new Point(surface.mouseX,surface.mouseY));
+		if (button.contains(p))
+			surface.switchScreen(ScreenSwitcher.GAME);
 	}
-
-	@Override
-	public void keyReleased(KeyEvent e) {
-		// TODO Auto-generated method stub
-		System.out.println(e.getExtendedKeyCode());
-		if (e.getExtendedKeyCode() == KeyEvent.VK_ESCAPE) {
-			System.out.println("yes");
-		}
-	}
+	
+	
 }
