@@ -99,7 +99,9 @@ public class Character extends Sprite{
 		vy += gravity;
 
 		Rectangle2D.Double strechY = new Rectangle2D.Double(getX(),Math.min(getY(),getY() + vy),width,height+Math.abs(vy));
-		Rectangle2D.Double strechX = new Rectangle2D.Double(Math.min(getX(),getY()),getY(),width+Math.abs(vx),height);
+		//Rectangle2D.Double strechY = new Rectangle2D.Double(xCoord,Math.min(yCoord,yCoord2),width,height+Math.abs(yVelocity));
+		
+		Rectangle2D.Double strechX = new Rectangle2D.Double(Math.min(getX(),getX() + vx), getY(),width+Math.abs(vx),height);
 		onASurface = false;
 		
 		//FLOOR

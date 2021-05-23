@@ -37,10 +37,11 @@ public class DrawingSurface extends PApplet implements ScreenSwitcher {
 	}
 
 
+
 	public void settings() {
 		System.out.println(activeScreen);
 //		size(activeScreen.DRAWING_WIDTH, activeScreen.DRAWING_HEIGHT);
-	}
+
 	
 	public void setup() {
 		surface.setResizable(true);
