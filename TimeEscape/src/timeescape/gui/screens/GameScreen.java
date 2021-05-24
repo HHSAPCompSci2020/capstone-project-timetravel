@@ -53,7 +53,7 @@ public class GameScreen extends Screen {
 
 		walls = new ArrayList<>();
 		walls.add(new Wall(0, 300, 1000, 50));
-		walls.add(new Wall(500, 0, 50, 1000));
+		walls.add(new Wall(500, 100, 50, 1000));
 
 		time = 0;
 	}
