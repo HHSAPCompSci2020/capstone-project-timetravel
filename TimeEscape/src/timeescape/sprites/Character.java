@@ -60,22 +60,22 @@ public class Character extends Sprite{
 	}
 
 	public void standing(Shape s) {
-		y = ((Rectangle) s).getY() - height;
+		y = s.getBounds().getY() - height;
 		vy = 0;
 	}
 	
 	public void verticallyBlocked(Shape s) {
-		y = ((Rectangle) s).getY() + height;
+		y = s.getBounds().getY() + height;
 		vy = 0;
 	}
 	
 	public void leftBlocked(Shape s) {
-		x = ((Rectangle) s).getX() + ((Rectangle) s).getWidth() + width;
+		x = s.getBounds().getX() + ((Rectangle) s).getWidth() + width;
 		vx = 0;
 	}
 	
 	public void rightBlocked(Shape s) {
-		x = ((Rectangle) s).getX() - width;
+		x = s.getBounds().getX() - width;
 		vx = 0;
 	}
 	
