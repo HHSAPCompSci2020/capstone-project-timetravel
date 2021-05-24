@@ -77,7 +77,7 @@ public class Character extends Sprite{
 	}
 	
 	private void verticallyBlocked(Shape s) {
-		y = s.getBounds().getY() + height;
+		y = s.getBounds().getHeight();
 		vy = 0;
 	}
 	
