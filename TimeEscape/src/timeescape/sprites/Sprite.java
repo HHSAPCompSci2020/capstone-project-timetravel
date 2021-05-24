@@ -1,4 +1,4 @@
-package sprites;
+package timeescape.sprites;
 
 import java.awt.geom.Rectangle2D;
 

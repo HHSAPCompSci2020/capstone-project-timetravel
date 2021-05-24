@@ -1,4 +1,4 @@
-package sprites;
+package timeescape.sprites;
 
 import processing.core.PImage;
 

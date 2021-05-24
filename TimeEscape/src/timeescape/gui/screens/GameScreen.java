@@ -1,13 +1,16 @@
-package gui;
+package timeescape.gui.screens;
+import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.event.KeyEvent;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 
 import processing.core.PImage;
-import sprites.Character;
-import sprites.TimeCharacter;
-import sprites.Wall;
+import timeescape.gui.DrawingSurface;
+import timeescape.sprites.Character;
+import timeescape.sprites.TimeCharacter;
+import timeescape.sprites.Wall;
 
 /**
  * Represents the game screen.
@@ -20,7 +23,7 @@ public class GameScreen extends Screen {
 
 
 	private DrawingSurface surface;
-	
+
 	private ArrayList<Shape> walls;
 	private Character character;
 
@@ -29,11 +32,18 @@ public class GameScreen extends Screen {
 	private TimeCharacter tc;
 	private boolean timeTraveling;
 	private boolean recording;
-	
+
+	private volatile long time;
+	private volatile long timeInterval;
+	private long setPointTime;
+
+	private Rectangle button;
+
 	public GameScreen(DrawingSurface surface) {
-		super(800, 600);
+		super(DrawingSurface.ASSUMED_WIDTH, DrawingSurface.ASSUMED_HEIGHT);
 		this.surface = surface;
 
+		button = new Rectangle(0, 0, 25, 25);
 
 		//		timeRecordedActions = new TimeRecordedActions(character);
 		recordedPositions = new PositionRecord();
@@ -45,17 +55,43 @@ public class GameScreen extends Screen {
 		walls.add(new Wall(0, 300, 1000, 50));
 		walls.add(new Wall(500, 0, 50, 1000));
 
+		time = 0;
 	}
-	
+
 	@Override
 	public void setup() {
 		spawnNewCharacter();
+		timeInterval = System.currentTimeMillis();
 	}
-	
-	
+
+
 	@Override
 	public void draw() {
-		surface.background(0,255,255);  
+		surface.background(0,255,255); 
+
+		// pause button
+		{
+			surface.fill(0);
+			surface.rect(button.x, button.y, button.width, button.height, 10, 10, 10, 10);
+			surface.fill(255,255,255);
+			String str = "||";
+			float w = surface.textWidth(str);
+			surface.text(str, button.x+button.width/2-w/2, button.y+button.height/2);
+		}
+
+		//stopwatch
+		{
+			long tempTime = System.currentTimeMillis();
+			time += tempTime - timeInterval;
+			timeInterval = tempTime;
+
+			surface.fill(0);
+			surface.textSize(20);
+			String str = time/1000/60 + ": " + time/1000 + "." + time % 1000;	
+			float w = surface.textWidth(str);
+			surface.text(str, DRAWING_WIDTH/2 - w/2, 30);
+		}
+
 		surface.fill(100);
 		for (Shape w : walls) {
 			if (w instanceof Wall) ((Wall)w).draw(surface);
@@ -66,6 +102,8 @@ public class GameScreen extends Screen {
 
 		character.draw(surface);
 
+
+		//key input
 
 		if (surface.isPressed(KeyEvent.VK_A))
 			character.walk(-1);
@@ -88,7 +126,7 @@ public class GameScreen extends Screen {
 
 			tc.draw(surface);
 			Point2D.Double p = recordedPositions.replayPositions();
-			
+
 			if (p != null) tc.setPosition(p);
 			else {
 				timeTraveling = false;
@@ -98,40 +136,51 @@ public class GameScreen extends Screen {
 		}
 
 	}
-	
-	
+
+	/**
+	 * Spawns a new Character that the player can control.
+	 * @post Overwrites the previous Character.
+	 */
 	public void spawnNewCharacter() {
 		PImage img = surface.loadImage("images/stickman.png");
-//		if (img == null) System.out.println("image loading error");
+		//		if (img == null) System.out.println("image loading error");
 		character = new Character(img, 50.0,50.0);
 	}
 
 	private void spawnTimeCharacter(Character characterSnapshot) {
 		tc = new TimeCharacter(characterSnapshot);
 	}
-	
+
 	private boolean setTimeTravelPoint() {
 		if (!recording) {
+			setPointTime = time;
 			recording = true;
 			recordedPositions.setCharacterSnapshot(character.getCharacterCopy());
-//			System.out.println("set");
+			//			System.out.println("set");
 			return true;
 		} else return false;
 	}
 
 	private boolean timeTravel() {
 		if(recording) {
+			time = setPointTime;
 			recording = false;
 			timeTraveling = true;
 			spawnTimeCharacter(recordedPositions.getInitialCharacterSnapshot());
-//			System.out.println("travel");
+			//			System.out.println("travel");
 			walls.add(tc);
 			return true;
 		} else return false;
 	}
-	
-private class PositionRecord {
-		
+
+	@Override
+	public void mousePressed() {
+		Point p = surface.actualCoordinatesToAssumed(new Point(surface.mouseX,surface.mouseY));
+		if (button.contains(p)) surface.switchScreen(ScreenSwitcher.PAUSEMENU);
+	}
+
+	private class PositionRecord {
+
 		private ArrayList<Point2D.Double> points;
 		private int currentFrame;
 		private Character character;
@@ -175,18 +224,18 @@ private class PositionRecord {
 		public void reset() {
 			points.clear();
 			currentFrame = 0;
-			System.out.println("actions cleared");
 		}
 	}
 
 
-	
+
 
 
 	//	unreliable replay
 
 	//	private class TimeRecordedActions {
 	//		private ArrayList<Integer> keys;
+
 	//		private int currentFrame;
 	//		private Character character;
 	//		
@@ -240,5 +289,5 @@ private class PositionRecord {
 	//			System.out.println("actions cleared");
 	//		}
 	//	}
-	
+
 }
