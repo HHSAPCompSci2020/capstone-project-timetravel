@@ -60,17 +60,24 @@ public class Character extends Sprite{
 	}
 
 	public void standing() {
+		y = getY() - 5;
 		vy = 0;
 	}
 	
 	public void verticallyBlocked() {
+		y = getY() + 5;
 		vy = 0;
 	}
-
-	/*public void blocked() {
+	
+	public void leftBlocked() {
+		x = getX() + 5;
 		vx = 0;
 	}
-	*/
+	
+	public void rightBlocked() {
+		x = getX() - 5;
+		vx = 0;
+	}
 	
 	public double getvx() {
 		return vx;
@@ -78,14 +85,6 @@ public class Character extends Sprite{
 	
 	public double getvy() {
 		return vy;
-	}
-	
-	public void bounceX() {
-		vx = -vx * bounce;
-	}
-	
-	public void bounceY() {
-		vy = -vy * bounce;
 	}
 	
 	public boolean getonASurface() {
@@ -121,7 +120,7 @@ public class Character extends Sprite{
 				if (s.intersects(strechY)) {
 					onASurface = true;
 					standingSurface = s;
-					bounceY();
+					standing();
 //					System.out.println(s + "---stopped");
 				}
 			}
@@ -133,7 +132,7 @@ public class Character extends Sprite{
 			for (Shape s: walls) {
 				if(s.intersects(strechX)) {
 					rightSurface = s;
-					bounceX();
+					rightBlocked();
 				}
 			}
 		}
@@ -144,7 +143,7 @@ public class Character extends Sprite{
 			for(Shape s: walls) {
 				if(s.intersects(strechX)) {
 					leftSurface = s;
-					bounceX();
+					leftBlocked();
 				}
 			}
 		}
