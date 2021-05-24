@@ -1,4 +1,4 @@
-package timeescape.sprites;
+package sprites;
 
 import java.awt.Rectangle;
 import java.awt.Shape;
@@ -59,23 +59,23 @@ public class Character extends Sprite{
 			vy -= jump;
 	}
 
-	public void standing() {
-		y = getY() - 5;
+	public void standing(Shape s) {
+		y = ((Rectangle) s).getY() - height;
 		vy = 0;
 	}
 	
-	public void verticallyBlocked() {
-		y = getY() + 5;
+	public void verticallyBlocked(Shape s) {
+		y = ((Rectangle) s).getY() + height;
 		vy = 0;
 	}
 	
-	public void leftBlocked() {
-		x = getX() + 5;
+	public void leftBlocked(Shape s) {
+		x = ((Rectangle) s).getX() + ((Rectangle) s).getWidth() + width;
 		vx = 0;
 	}
 	
-	public void rightBlocked() {
-		x = getX() - 5;
+	public void rightBlocked(Shape s) {
+		x = ((Rectangle) s).getX() - width;
 		vx = 0;
 	}
 	
@@ -120,9 +120,8 @@ public class Character extends Sprite{
 				if (s.intersects(strechY)) {
 					onASurface = true;
 					standingSurface = s;
-					standing(); // this causes "bouncing" since the character's position is being set an arbitrary amount of pixels above itself
-					// way to solve this: set position right outside the surface it's standing on
-					// y of the character (from the head) off the ground = y of the top of the surface it stands on - y of the character's height
+					standing(s);
+//					System.out.println(s + "---stopped");
 				}
 			}
 		}
@@ -133,9 +132,7 @@ public class Character extends Sprite{
 			for (Shape s: walls) {
 				if(s.intersects(strechX)) {
 					rightSurface = s;
-					rightBlocked(); // this also causes "bouncing" since the character's position is being set an arbitrary amount of pixels above itself
-		
-					// x of the character (from the left) off the wall = x of the wall's right side - distance from the character's left to the wall
+					rightBlocked();
 				}
 			}
 		}
@@ -146,9 +143,7 @@ public class Character extends Sprite{
 			for(Shape s: walls) {
 				if(s.intersects(strechX)) {
 					leftSurface = s;
-					leftBlocked(); // this also causes "bouncing" since the character's position is being set an arbitrary amount of pixels above itself
-					//
-					// x of the character (from the left) off the wall = x of the wall's left side - distance from the character's right to the wall
+					leftBlocked();
 				}
 			}
 		}
@@ -159,9 +154,7 @@ public class Character extends Sprite{
 			for(Shape s: walls) {
 				if(s.intersects(strechY)) {
 					roofSurface = s;
-					verticallyBlocked();// also this causes "bouncing" since the character's position is being set an arbitrary amount of pixels above itself
-					//
-					// y of the character (from the head) off the ground = y of the bottom of the surface its head bonked on - y of the character's height
+					verticallyBlocked();
 				}
 			}
 		}
