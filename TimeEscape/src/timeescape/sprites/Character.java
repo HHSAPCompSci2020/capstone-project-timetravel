@@ -132,7 +132,7 @@ public class Character extends Sprite{
 			for (Shape s: walls) {
 				if(s.intersects(strechX)) {
 					rightSurface = s;
-					rightBlocked();
+					rightBlocked(s);
 				}
 			}
 		}
@@ -143,7 +143,7 @@ public class Character extends Sprite{
 			for(Shape s: walls) {
 				if(s.intersects(strechX)) {
 					leftSurface = s;
-					leftBlocked();
+					leftBlocked(s);
 				}
 			}
 		}
@@ -154,7 +154,7 @@ public class Character extends Sprite{
 			for(Shape s: walls) {
 				if(s.intersects(strechY)) {
 					roofSurface = s;
-					verticallyBlocked();
+					verticallyBlocked(s);
 				}
 			}
 		}
