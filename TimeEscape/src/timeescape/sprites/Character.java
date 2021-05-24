@@ -147,7 +147,7 @@ public class Character extends Sprite{
 				if(s.intersects(strechX)) {
 					leftSurface = s;
 					leftBlocked(); // this also causes "bouncing" since the character's position is being set an arbitrary amount of pixels above itself
-					// way to solve this: set position right outside the surface it's standing on
+					//
 					// x of the character (from the left) off the wall = x of the wall's left side - distance from the character's right to the wall
 				}
 			}
@@ -160,7 +160,7 @@ public class Character extends Sprite{
 				if(s.intersects(strechY)) {
 					roofSurface = s;
 					verticallyBlocked();// also this causes "bouncing" since the character's position is being set an arbitrary amount of pixels above itself
-					// way to solve this: set position right outside the surface it's standing on
+					//
 					// y of the character (from the head) off the ground = y of the bottom of the surface its head bonked on - y of the character's height
 				}
 			}

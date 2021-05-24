@@ -1,6 +1,6 @@
 ﻿Time Escape
 Authors: Ethan Chang, Taya Williams
-Revision: 5/7/2021
+Revision: 5/23/2021
 
 Introduction: 
 
@@ -10,12 +10,11 @@ The goal of the game is to complete all the puzzles and to “escape the present
 This program is directed towards casual gamers and people who want to have a chill gaming experience while solving puzzles and experiencing a story through the game.
 
 Instructions:
-‘a’ and ‘d’ to move left and right respectively
-‘w’ or space to jump
-‘f’ to set a time trivial set point
-‘t’ to time travel to the set point
+‘a’ and ‘d’ - move left and right respectively
+‘w’ or space - jump
+‘f’ - set a time travel set point
+‘t’ - time travel to the set point
 Escape or clicking on the pause menu button on the top-left corner of the window to get the pause menu
-In the pause menu, pressing ‘r’ will restart the level
 Do actions need to be taken in a certain order?
 Time travel will only activate if there’s a set point.
 There can only be one set point at a time with the most recent set point overriding previous ones.
@@ -57,6 +56,8 @@ GUI classes
 DrawingSurface
 Main Menu
 Pause Menu
+Screens
+GameBoard
 Sprite classes
 Character
 TimeCharacter
@@ -66,8 +67,10 @@ Box
 Credits:
 Taya Williams
 Sprite Classes
+Physics
+TimeTravel algorithm
 Ethan Chang
 Drawing Surface
-Main Menu
-Pause Menu
+Menus
+TimeTravel algorithm
 

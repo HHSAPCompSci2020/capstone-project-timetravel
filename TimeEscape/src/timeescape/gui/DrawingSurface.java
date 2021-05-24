@@ -112,12 +112,13 @@ public class DrawingSurface extends PApplet implements ScreenSwitcher {
 				switchScreen(ScreenSwitcher.PAUSEMENU);
 				break;
 			case ScreenSwitcher.PAUSEMENU:
+				switchScreen(ScreenSwitcher.GAME);
+				break;
 			case ScreenSwitcher.INSTRUCTIONS:
 			case ScreenSwitcher.EXIT:
 			case ScreenSwitcher.START:
 				switchToPreviousScreen();
 				break;
-			
 			}
 			
 		}
