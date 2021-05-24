@@ -70,7 +70,7 @@ public class Character extends Sprite{
 	}
 	
 	public void leftBlocked(Shape s) {
-		x = s.getBounds().getX() + ((Rectangle) s).getWidth() + width;
+		x = s.getBounds().getX() + s.getBounds().getWidth() + width;
 		vx = 0;
 	}
 	
