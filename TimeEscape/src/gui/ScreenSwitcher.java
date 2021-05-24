@@ -1,3 +1,4 @@
+package gui;
 
 public interface ScreenSwitcher {
 	public static final int MAINMENU = 0;
