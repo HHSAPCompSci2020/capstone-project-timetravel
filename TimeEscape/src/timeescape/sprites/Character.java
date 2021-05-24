@@ -118,18 +118,8 @@ public class Character extends Sprite{
 	public void act(ArrayList<Shape> walls) {
 
 		double y = getY();
-		y += vy;
-		this.setY(y);
-		
 		double x = getX();
-		x += vx;
-		this.setX(x);
 		
-
-		vy *= friction;
-		vx *= friction;
-
-		vy += gravity;
 
 		Rectangle2D.Double strechY = new Rectangle2D.Double(getX(),Math.min(getY(),getY() + vy),width,height+Math.abs(vy));
 		//Rectangle2D.Double strechY = new Rectangle2D.Double(xCoord,Math.min(yCoord,yCoord2),width,height+Math.abs(yVelocity));
@@ -139,11 +129,9 @@ public class Character extends Sprite{
 		
 		//FLOOR
 		if (vy > 0) {
-			Shape standingSurface = null;
 			for (Shape s : walls) {
 				if (s.intersects(strechY)) {
 					onASurface = true;
-					standingSurface = s;
 					standing(s);
 //					System.out.println(s + "---stopped");
 				}
@@ -152,10 +140,8 @@ public class Character extends Sprite{
 		
 		//RIGHT WALL
 		if(vx > 0) {
-			Shape rightSurface = null;
 			for (Shape s: walls) {
 				if(s.intersects(strechX)) {
-					rightSurface = s;
 					rightBlocked(s);
 				}
 			}
@@ -163,10 +149,8 @@ public class Character extends Sprite{
 		
 		//LEFT WALL
 		if(vx < 0) {
-			Shape leftSurface = null;
 			for(Shape s: walls) {
 				if(s.intersects(strechX)) {
-					leftSurface = s;
 					leftBlocked(s);
 				}
 			}
@@ -174,14 +158,24 @@ public class Character extends Sprite{
 		
 		//ROOF
 		if(vy < 0) {
-			Shape roofSurface = null;
 			for(Shape s: walls) {
 				if(s.intersects(strechY)) {
-					roofSurface = s;
 					verticallyBlocked(s);
 				}
 			}
 		}
+		
+		y += vy;
+		x += vx;
+		
+		
+		vy += gravity;
+		vy *= friction;
+		vx *= friction;
+
+		this.setY(y);
+		this.setX(x);
+		
 	}
 	/**
 	 * gets a new character that is an exact copy of a already created character
