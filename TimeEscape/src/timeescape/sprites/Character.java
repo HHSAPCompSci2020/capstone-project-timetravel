@@ -45,52 +45,76 @@ public class Character extends Sprite{
 		this.onASurface = onASurface;
 	}
 	
+	/**
+	 * sets the position of the character from a point
+	 */
 	public void setPosition(Point2D.Double p) {
 		x = p.getX();
 		y = p.getY();
 	}
-
+	
+	/**
+	 * moves the character in a certain horizontal direction
+	 * @param dir the direction of the desired character movement
+	 */
+	
 	public void walk(int dir) {
 		vx += dir/2.0; //1 is too fast, so divided by 2 and is perfect
 	}
-
+	
+	/**
+	 * moves the character upwards in the vertical direction
+	 */
+	
 	public void jump() {
 		if (onASurface)
 			vy -= jump;
 	}
 
-	public void standing(Shape s) {
+	private void standing(Shape s) {
 		y = s.getBounds().getY() - height;
 		vy = 0;
 	}
 	
-	public void verticallyBlocked(Shape s) {
+	private void verticallyBlocked(Shape s) {
 		y = s.getBounds().getY() + height;
 		vy = 0;
 	}
 	
-	public void leftBlocked(Shape s) {
+	private void leftBlocked(Shape s) {
 		x = s.getBounds().getX() + s.getBounds().getWidth() + width;
 		vx = 0;
 	}
 	
-	public void rightBlocked(Shape s) {
+	private void rightBlocked(Shape s) {
 		x = s.getBounds().getX() - width;
 		vx = 0;
 	}
-	
+	/**
+	 * gets the x-velocity of the character
+	 * @return the x-velocity of the character
+	 */
 	public double getvx() {
 		return vx;
 	}
-	
+	/**
+	 * gets the y-velocity of the character
+	 * @return the x-velocity of the character
+	 */
 	public double getvy() {
 		return vy;
 	}
-	
+	/**
+	 * states whether the character is standing on a surface or not
+	 * @return if the character is on a surface
+	 */
 	public boolean getonASurface() {
 		return onASurface;
 	}
 
+	/**
+	 * allows the character to speed up and slow down based on its velocity, gravity, and friction. also contains code for character collision with walls.
+	 */
 	public void act(ArrayList<Shape> walls) {
 
 		double y = getY();
@@ -159,7 +183,10 @@ public class Character extends Sprite{
 			}
 		}
 	}
-	
+	/**
+	 * gets a new character that is an exact copy of a already created character
+	 * @return a copy of an already created character.
+	 */
 	public Character getCharacterCopy() {
 		return new Character(image, x, y, vx, vy, onASurface);
 	}
