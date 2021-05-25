@@ -11,7 +11,7 @@ import processing.core.PImage;
 /**
  * 
  * @author Taya Williams
- *
+ * @version 5/24/2021
  */
 
 public class Character extends Sprite{
@@ -23,7 +23,7 @@ public class Character extends Sprite{
 	private static final double gravity = 0.75; //0.2
 	private static final double friction = 0.95;
 	private static final double jump = 15;
-	private static final double bounce = 1.2;
+//	private static final double bounce = 1.2;
 	
 	protected double vx;
 	protected double vy;
@@ -47,10 +47,21 @@ public class Character extends Sprite{
 	
 	/**
 	 * sets the position of the character from a point
+	 * @param p - Point where the Character will be set to.
 	 */
 	public void setPosition(Point2D.Double p) {
 		x = p.getX();
 		y = p.getY();
+	}
+	
+	/**
+	 * sets the position of the character from a point
+	 * @param x - the x position where the Character will be set to.
+	 * @param y - the y position where the Character will be set to.
+	 */
+	public void setPosition(double x, double y) {
+		this.x = x;
+		this.y = y;
 	}
 	
 	/**
@@ -114,6 +125,7 @@ public class Character extends Sprite{
 
 	/**
 	 * allows the character to speed up and slow down based on its velocity, gravity, and friction. also contains code for character collision with walls.
+	 * @param walls - the obstacles the Character can be blocked by.
 	 */
 	public void act(ArrayList<Shape> walls) {
 
@@ -173,8 +185,7 @@ public class Character extends Sprite{
 		vy *= friction;
 		vx *= friction;
 
-		this.setY(y);
-		this.setX(x);
+		setPosition(x, y);
 		
 	}
 	/**

@@ -8,7 +8,7 @@ import processing.core.PImage;
 /**
  * 
  * @author Taya Williams
- *
+ * @version 5/24/2021
  */
 public class Sprite extends Rectangle2D.Double{
 	public PImage image;
@@ -33,14 +33,14 @@ public class Sprite extends Rectangle2D.Double{
 	}
 	/**
 	 * sets x coordinate
-	 * @return x coordinate
+	 * @param x - the x coordinate that the Sprite will be set to.
 	 */
 	public void setX(double x) {
 		super.x = x;
 	}
 	/**
 	 * sets y coordinate
-	 * @return y coordinate
+	 * @param y - the y coordinate that the Sprite will be set to.
 	 */
 	public void setY(double y) {
 		super.y = y;
@@ -48,7 +48,8 @@ public class Sprite extends Rectangle2D.Double{
 	/**
 	 * draws the sprite
 	 * @param g is the PApplet
-	 * @pre 
+	 * @pre g cannot be null.
+	 * @pre The image may be changed be subsequent settings on the given PApplet.
 	 */
 	public void draw(PApplet g) {
 		g.image(image,(int)x,(int)y,(int)width,(int)height);
